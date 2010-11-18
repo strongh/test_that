@@ -365,3 +365,17 @@ takes_less_than <- function(amount) {
     )
   }
 }
+
+#' Contains: does the object contain the the correct elements?
+#'
+#' For checking membership
+#'
+#' @export
+#' @param a necessary subset 
+contains <- function(subst) {
+  function(vect){
+    expectation(
+                all(subst %in% vect),
+                str_c("elements ", paste(setdiff(subst, vect), collapse=", "), " are missing"))
+  }
+}
