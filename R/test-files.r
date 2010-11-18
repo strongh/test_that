@@ -8,16 +8,17 @@
 #' @param env environment in which to execute test suite. Defaults to new
 #    environment inheriting from the global environment.
 #' @param reporter reporter to use
+#' @param chdir whether to change directories for sourcing
 #' @export
-test_dir <- function(path, reporter = "summary", env = NULL) {
+test_dir <- function(path, reporter = "summary", env = NULL, chdir = TRUE) {
   reporter <- find_reporter(reporter)
   if (is.null(env)) {
     env <- new.env(parent = globalenv())    
   }
   
-  source_dir(path, "^helper.*\\.[rR]$", env = env)
+  source_dir(path, "^helper.*\\.[rR]$", env = env, chdir = chdir)
   with_reporter(reporter, {
-    source_dir(path, "^test.*\\.[rR]$", env = env)    
+    source_dir(path, "^test.*\\.[rR]$", env = env, chdir = chdir)    
   })
 }
 
@@ -46,9 +47,10 @@ source_dir <- function(path, pattern = "\\.[rR]$", env = NULL, chdir = TRUE) {
 #' 
 #' @param path path to file
 #' @param reporter reporter to use
+#' @param chdir whether to change directories for sourcing
 #' @export
-test_file <- function(path, reporter = "summary") {    
+test_file <- function(path, reporter = "summary", chdir = TRUE) {    
   reporter <- find_reporter(reporter)
   with_reporter(reporter, 
-    sys.source(path, new.env(parent = globalenv()), chdir = TRUE))
+    sys.source(path, new.env(parent = globalenv()), chdir))
 }
