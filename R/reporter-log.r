@@ -27,7 +27,7 @@ LogReporter$do({
   
   self$add_result <- function(result) {
     if (result$passed) {
-      cat(" . ", file = logfile, append = TRUE)
+      cat(".", file = logfile, append = TRUE)
     } else {
       self$failed <- TRUE
       self$n <- self$n + 1
@@ -41,9 +41,9 @@ LogReporter$do({
                
   self$end_reporter <- function() {
     if (self$n == 0) {
-      cat("\n", file = logfile, append = TRUE)
+      # do nothing! not even '\n'....
     } else {
-      type <- ifelse(sapply(self$failures, "[[", "error"), "Error", "Failure")
+      type <- ifelse(sapply(self$failures, "[[", "error"), "!Error", "!Failure")
       tests <- sapply(self$failures, "[[", "test")
       
       header <- str_c(type, ": ", tests, " ")
@@ -51,7 +51,7 @@ LogReporter$do({
       message <- sapply(self$failures, "[[", "message")
       
       cat(str_c(header, ", ", 
-                message, ", ", collapse = ";"),
+                message, collapse = ";"),
           file = logfile, append = TRUE)      
     }
   }
